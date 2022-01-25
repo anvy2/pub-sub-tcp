@@ -22,7 +22,7 @@ func main() {
 	}
 	defer conn.Close()
 	for {
-		fmt.Print("Command to send: ")
+		fmt.Print("Enter JSON to send : ")
 		reader := bufio.NewReader(os.Stdin)
 		text, _ := reader.ReadBytes('\n')
 		conn.Write(text)
