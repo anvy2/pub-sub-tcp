@@ -110,10 +110,9 @@ func acceptOutputConnection(server *tcp.Server, c chan jsonHelper.JSON, wg *sync
 }
 
 func writeToConnection(conn net.Conn, c chan jsonHelper.JSON, server *tcp.Server) {
-	server.Wg.Add(1)
 	defer conn.Close()
-	defer server.Wg.Done()
 	for {
+
 		select {
 		case o := <-c:
 			conn.Write(o)
@@ -123,6 +122,11 @@ func writeToConnection(conn net.Conn, c chan jsonHelper.JSON, server *tcp.Server
 				time.Sleep(time.Millisecond * time.Duration(waitTime))
 			}
 
+		}
+		var buffer []byte
+		_, err := conn.Read(buffer)
+		if err != nil || string(buffer) == "STOP" {
+			conn.Write([]byte("STOP\n"))
 		}
 	}
 }

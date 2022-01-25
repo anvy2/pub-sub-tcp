@@ -32,7 +32,9 @@ func main() {
 	for {
 		reader := bufio.NewReader(conn)
 		text, _ := reader.ReadBytes('\n')
-
+		if string(text) == "STOP" {
+			return
+		}
 		var data RecievedData
 		err := jsonHelper.DecodeJson(text, &data)
 		if err != nil {
@@ -42,5 +44,6 @@ func main() {
 			fmt.Println(data.Data)
 			fmt.Println("Recieved at: ", data.Timestamp)
 		}
+
 	}
 }

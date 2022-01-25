@@ -25,7 +25,9 @@ func main() {
 		fmt.Print("Enter JSON to send : ")
 		reader := bufio.NewReader(os.Stdin)
 		text, _ := reader.ReadBytes('\n')
+		if string(text) == "STOP" {
+			return
+		}
 		conn.Write(text)
-		os.Stdout.Write(text)
 	}
 }
